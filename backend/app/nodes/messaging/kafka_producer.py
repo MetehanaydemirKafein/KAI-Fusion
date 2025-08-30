@@ -47,7 +47,7 @@ from .base_messaging import (
     BaseProducerNode, MessageConfig, MessageResponse, Message,
     MessagePattern, MessageFormat, MessageSecurity
 )
-from ..base import NodeInput, NodeOutput, NodeType
+from ..base import NodeInput, NodeOutput, NodeType, NodeMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -220,6 +220,35 @@ class KafkaProducerNode(BaseProducerNode):
     - Memory: <100MB per active producer connection
     - Compression: Up to 80% size reduction with efficient codecs
     """
+    
+    @staticmethod
+    def get_metadata() -> NodeMetadata:
+        return NodeMetadata(
+            name="KafkaProducer",
+            display_name="Kafka Producer",
+            description="High-performance message publisher to Apache Kafka topics with batch processing, delivery guarantees, and enterprise reliability features",
+            category="MESSAGING",
+            input_schema={
+                "message_data": {"type": "any", "description": "Message data to publish to Kafka"},
+                "bootstrap_servers": {"type": "string", "description": "Comma-separated Kafka broker addresses"},
+                "topic": {"type": "string", "description": "Kafka topic name to publish to"},
+                "message_key": {"type": "string", "description": "Message key for partitioning"},
+                "message_format": {"type": "string", "enum": ["json", "text", "binary"], "description": "Message serialization format"},
+                "acks": {"type": "string", "enum": ["0", "1", "all"], "description": "Acknowledgment level for delivery guarantee"},
+                "batch_size": {"type": "integer", "minimum": 1, "maximum": 10000, "description": "Number of messages per batch"},
+                "compression": {"type": "string", "enum": ["none", "gzip", "snappy", "lz4", "zstd"], "description": "Compression algorithm"},
+                "security_protocol": {"type": "string", "enum": ["PLAINTEXT", "SSL", "SASL_PLAINTEXT", "SASL_SSL"], "description": "Security protocol"}
+            },
+            output_schema={
+                "publish_result": {"type": "object", "description": "Message publishing result and metadata"},
+                "delivery_report": {"type": "object", "description": "Detailed delivery report with partition/offset info"},
+                "producer_stats": {"type": "object", "description": "Producer statistics and metrics"},
+                "success": {"type": "boolean", "description": "Whether message was published successfully"}
+            },
+            node_type=NodeType.TERMINATOR,
+            tags=["kafka", "messaging", "producer", "publishing", "enterprise"],
+            version="1.0.0"
+        )
     
     def __init__(self):
         super().__init__()

@@ -337,50 +337,51 @@ async def lifespan(app: FastAPI):
     # Initialize enhanced logging system first
     auto_configure_enhanced_logging()
     
-    logger.info("🚀 Starting Agent-Flow V2 Backend...")
+    logger.info("[INFO] Starting Agent-Flow V2 Backend...")
+    # Force reload to discover messaging nodes
     
     # Initialize node registry
     try:
         node_registry.discover_nodes()
         nodes_count = len(node_registry.nodes)
-        logger.info(f"✅ Registered {nodes_count} nodes")
+        logger.info(f"[OK] Registered {nodes_count} nodes")
     except Exception as e:
-        logger.error(f"❌ Failed to initialize node registry: {e}")
+        logger.error(f"[ERROR] Failed to initialize node registry: {e}")
     
     # Initialize engine
     try:
         get_engine()
-        logger.info("✅ Engine initialized")
+        logger.info("[OK] Engine initialized")
     except Exception as e:
-        logger.error(f"❌ Failed to initialize engine: {e}")
+        logger.error(f"[ERROR] Failed to initialize engine: {e}")
     
     # Initialize tracing and monitoring
     try:
         setup_tracing()
-        logger.info("✅ Tracing and monitoring initialized")
+        logger.info("[OK] Tracing and monitoring initialized")
     except Exception as e:
-        logger.error(f"❌ Failed to initialize tracing: {e}")
+        logger.error(f"[ERROR] Failed to initialize tracing: {e}")
     
     # Initialize database
     try:
         # Test database connection
         db_health = await check_database_health()
         if db_health['healthy']:
-            logger.info(f"✅ Database connection test passed ({db_health['response_time_ms']}ms)")
+            logger.info(f"[OK] Database connection test passed ({db_health['response_time_ms']}ms)")
         else:
-            logger.error(f"❌ Database connection test failed: {db_health.get('error', 'Unknown error')}")
+            logger.error(f"[ERROR] Database connection test failed: {db_health.get('error', 'Unknown error')}")
             raise RuntimeError(f"Database connection test failed: {db_health.get('error', 'Unknown error')}")
     except Exception as e:
-        logger.error(f"❌ Database initialization failed: {e}")
+        logger.error(f"[ERROR] Database initialization failed: {e}")
         raise e
     
-    logger.info("✅ Backend initialization complete - KAI Fusion Ready!")
+    logger.info("[OK] Backend initialization complete - KAI Fusion Ready!")
     
     yield
     
     # Cleanup
-    logger.info("🔄 Shutting down KAI Fusion Backend...")
-    logger.info("✅ Backend shutdown complete")
+    logger.info("[INFO] Shutting down KAI Fusion Backend...")
+    logger.info("[OK] Backend shutdown complete")
 
 
 # Create FastAPI application

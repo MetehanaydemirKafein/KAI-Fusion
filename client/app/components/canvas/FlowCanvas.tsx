@@ -95,6 +95,12 @@ import OpenAIDocumentEmbedderConfigForm from "../nodes/embeddings/OpenAIDocument
 import EmbeddingsConfigForm from "../nodes/embeddings/OpenaiEmbeddingsNode/EmbeddingsConfigForm";
 import RetrieverConfigForm from "../nodes/tools/RetrieverConfigForm";
 
+// Import Kafka messaging components
+import KafkaConsumerNode from "../nodes/messaging/KafkaConsumer";
+import KafkaProducerNode from "../nodes/messaging/KafkaProducer";
+import KafkaConsumerConfigForm from "../nodes/messaging/KafkaConsumer/KafkaConsumerConfigForm";
+import KafkaProducerConfigForm from "../nodes/messaging/KafkaProducer/KafkaProducerConfigForm";
+
 // Node config component mapping
 const nodeConfigComponents: Record<string, React.ComponentType<any>> = {
   OpenAIChat: ChatConfigForm,
@@ -114,6 +120,8 @@ const nodeConfigComponents: Record<string, React.ComponentType<any>> = {
   OpenAIEmbedder: OpenAIDocumentEmbedderConfigForm,
   OpenAIEmbeddings: EmbeddingsConfigForm,
   RetrieverProvider: RetrieverConfigForm,
+  KafkaConsumer: KafkaConsumerConfigForm,
+  KafkaProducer: KafkaProducerConfigForm,
 };
 
 // Define nodeTypes outside component to prevent recreations
@@ -146,6 +154,8 @@ const baseNodeTypes = {
   VectorStoreOrchestrator: VectorStoreOrchestratorNode,
   RetrieverProvider: RetrieverNode,
   IntelligentVectorStore: IntelligentVectorStoreNode,
+  KafkaConsumer: KafkaConsumerNode,
+  KafkaProducer: KafkaProducerNode,
 };
 
 interface FlowCanvasProps {

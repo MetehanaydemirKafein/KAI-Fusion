@@ -519,7 +519,7 @@ async def init_database():
             conn = sqlite3.connect(db_path)
             
             # Create basic execution tracking table
-            conn.execute('''
+            conn.execute(""\"
                 CREATE TABLE IF NOT EXISTS workflow_executions (
                     execution_id TEXT PRIMARY KEY,
                     status TEXT NOT NULL,
@@ -529,10 +529,10 @@ async def init_database():
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
-            ''')
+            ""\")
             
             # Create session memory table
-            conn.execute('''
+            conn.execute(""\"
                 CREATE TABLE IF NOT EXISTS session_memory (
                     session_id TEXT NOT NULL,
                     message_order INTEGER NOT NULL,
@@ -541,7 +541,7 @@ async def init_database():
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     PRIMARY KEY (session_id, message_order)
                 )
-            ''')
+            ""\")
             
             conn.commit()
             conn.close()
@@ -556,7 +556,7 @@ async def init_database():
                 conn = await asyncpg.connect(database_url)
                 
                 # Create execution tracking table
-                await conn.execute('''
+                await conn.execute(""\"
                     CREATE TABLE IF NOT EXISTS workflow_executions (
                         execution_id VARCHAR(255) PRIMARY KEY,
                         status VARCHAR(50) NOT NULL,
@@ -566,10 +566,10 @@ async def init_database():
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                     )
-                ''')
+                ""\")
                 
                 # Create session memory table
-                await conn.execute('''
+                await conn.execute(""\"
                     CREATE TABLE IF NOT EXISTS session_memory (
                         session_id VARCHAR(255) NOT NULL,
                         message_order INTEGER NOT NULL,
@@ -578,7 +578,7 @@ async def init_database():
                         timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         PRIMARY KEY (session_id, message_order)
                     )
-                ''')
+                ""\")
                 
                 await conn.close()
                 logger.info("PostgreSQL database initialized successfully")

@@ -264,7 +264,7 @@ import os
 # Core Application Settings
 SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here-change-in-production")
 ENVIRONMENT = "development"
-PORT = "8000"
+PORT = "23056"
 
 # Database Settings
 DATABASE_URL = os.getenv("DATABASE_URL")

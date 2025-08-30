@@ -48,7 +48,7 @@ from .base_messaging import (
     BaseConsumerNode, MessageConfig, MessageResponse, Message,
     MessagePattern, MessageFormat, MessageSecurity
 )
-from ..base import NodeInput, NodeOutput, NodeType
+from ..base import NodeInput, NodeOutput, NodeType, NodeMetadata
 
 logger = logging.getLogger(__name__)
 
@@ -208,6 +208,32 @@ class KafkaConsumerNode(BaseConsumerNode):
     - Memory: <50MB per active consumer connection
     - Scalability: Horizontal scaling via consumer groups
     """
+    
+    @staticmethod
+    def get_metadata() -> NodeMetadata:
+        return NodeMetadata(
+            name="KafkaConsumer",
+            display_name="Kafka Consumer",
+            description="Real-time message consumer from Apache Kafka topics with consumer group management, offset handling, and message filtering",
+            category="MESSAGING",
+            input_schema={
+                "bootstrap_servers": {"type": "string", "description": "Comma-separated Kafka broker addresses"},
+                "topic": {"type": "string", "description": "Kafka topic name to consume from"},
+                "group_id": {"type": "string", "description": "Consumer group ID for load balancing"},
+                "message_format": {"type": "string", "enum": ["json", "text", "binary"], "description": "Expected message format"},
+                "batch_size": {"type": "integer", "minimum": 1, "maximum": 10000, "description": "Number of messages per batch"},
+                "timeout_ms": {"type": "integer", "minimum": 1000, "description": "Consumer timeout in milliseconds"},
+                "security_protocol": {"type": "string", "enum": ["PLAINTEXT", "SSL", "SASL_PLAINTEXT", "SASL_SSL"], "description": "Security protocol"}
+            },
+            output_schema={
+                "messages": {"type": "array", "description": "List of consumed Kafka messages"},
+                "consumer_stats": {"type": "object", "description": "Consumer statistics and metrics"},
+                "last_message": {"type": "object", "description": "Most recently consumed message"}
+            },
+            node_type=NodeType.PROVIDER,
+            tags=["kafka", "messaging", "consumer", "streaming", "real-time"],
+            version="1.0.0"
+        )
     
     def __init__(self):
         super().__init__()

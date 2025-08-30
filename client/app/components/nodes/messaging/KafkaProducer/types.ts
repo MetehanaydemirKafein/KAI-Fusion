@@ -1,13 +1,53 @@
 // KafkaProducer Types and Interfaces
 
-export interface KafkaProducerData {
+export interface KafkaProducerNodeProps {
+  data: KafkaProducerData;
   id: string;
-  type: "KafkaProducer";
-  config: KafkaProducerConfig;
-  position: {
-    x: number;
-    y: number;
-  };
+}
+
+export interface KafkaProducerData {
+  name?: string;
+  displayName?: string;
+  description?: string;
+  validationStatus?: "success" | "error" | "pending";
+  
+  // Connection settings
+  bootstrap_servers?: string;
+  topic?: string;
+  client_id?: string;
+
+  // Message settings
+  message_format?: "json" | "text" | "binary";
+  message_key_template?: string;
+  message_value_template?: string;
+  headers?: Record<string, string>;
+
+  // Producer settings
+  acks?: "0" | "1" | "all";
+  retries?: number;
+  batch_size?: number;
+  linger_ms?: number;
+  buffer_memory?: number;
+  compression_type?: "none" | "gzip" | "snappy" | "lz4" | "zstd";
+  max_request_size?: number;
+  request_timeout_ms?: number;
+  delivery_timeout_ms?: number;
+  enable_idempotence?: boolean;
+
+  // Security settings
+  security_protocol?: "PLAINTEXT" | "SSL" | "SASL_PLAINTEXT" | "SASL_SSL";
+  sasl_mechanism?: "PLAIN" | "SCRAM-SHA-256" | "SCRAM-SHA-512";
+  username?: string;
+  password?: string;
+  ssl_cafile?: string;
+  ssl_certfile?: string;
+  ssl_keyfile?: string;
+
+  // Advanced settings
+  partitioner?: "default" | "round_robin" | "murmur2";
+  max_in_flight_requests_per_connection?: number;
+  metadata_max_age_ms?: number;
+  retry_backoff_ms?: number;
 }
 
 export interface KafkaProducerConfig {

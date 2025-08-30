@@ -533,7 +533,7 @@ class LangGraphWorkflowEngine(BaseWorkflowEngine):
             print("⚠️  No nodes discovered! Creating minimal fallback registry...")
             self._create_minimal_fallback_registry(node_registry)
 
-        print(f"✅ Engine initialized with {len(node_registry.nodes)} nodes")
+        print(f"[OK] Engine initialized with {len(node_registry.nodes)} nodes")
         
         # Choose MemorySaver automatically (GraphBuilder handles this)
         self._builder = GraphBuilder(node_registry.nodes)
